@@ -93,15 +93,3 @@ climate:
 | `target_temp` | restaurée / 20 | Consigne initiale en °C |
 | `initial_hvac_mode` | restauré / off | `heat` ou `off` |
 | `initial_preset` | restauré / away | `comfort`, `eco`, `away` ou `sleep` |
-
-## Développement
-
-```sh
-python3.14 -m venv .venv
-.venv/bin/python -m pip install -r requirements-dev.txt
-.venv/bin/ruff check .
-.venv/bin/ruff format --check .
-.venv/bin/pytest -q
-```
-
-Les tests utilisent le véritable Core HA avec une sonde et des services de relais en mémoire. Ils ne commandent aucun radiateur physique. L’icône SVG originale se trouve dans `assets/icon.svg` ; des versions PNG claires et sombres sont incluses dans `brand/`, conformément au [format d’images locales de HA](https://contributors.home-assistant.io/blog/2026/02/24/brands-proxy-api/).
