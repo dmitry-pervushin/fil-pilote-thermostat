@@ -1,0 +1,81 @@
+{
+  "title": "Fil Pilote Thermostat",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect your fil pilote interface",
+        "description": "Choose two different on/off relay entities and a room temperature sensor. Relay order must match your interface wiring.",
+        "data": {
+          "name": "Name",
+          "heater_s1": "Relay S1",
+          "heater_s2": "Relay S2",
+          "target_sensor": "Temperature sensor"
+        }
+      },
+      "settings": {
+        "title": "Thermostat settings",
+        "description": "Temperatures and tolerances are in °C. Leave startup overrides empty to restore the last state. Away sends frost protection; Sleep sends stop. Sensor timeout is in seconds and checked every minute.",
+        "data": {
+          "min_temp": "Minimum temperature",
+          "max_temp": "Maximum temperature",
+          "target_temp": "Startup target temperature",
+          "cold_tolerance": "Cold tolerance",
+          "hot_tolerance": "Hot tolerance",
+          "initial_hvac_mode": "Startup HVAC mode",
+          "initial_preset": "Startup pilot mode",
+          "precision": "Temperature step",
+          "sensor_timeout": "Sensor timeout (0 disables)"
+        }
+      }
+    },
+    "error": {
+      "same_relays": "S1 and S2 must be different entities.",
+      "invalid_settings": "Check the temperature range and target. Tolerances must be non-negative, and at least one must be greater than zero.",
+      "empty_name": "Enter a name."
+    },
+    "abort": {
+      "already_configured": "One or both relays are already used by a fil pilote thermostat."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Thermostat options",
+        "description": "Temperatures and tolerances are in °C. Leave startup overrides empty to restore the last state. Away sends frost protection; Sleep sends stop. Sensor timeout is in seconds and checked every minute.",
+        "data": {
+          "target_sensor": "Temperature sensor",
+          "min_temp": "Minimum temperature",
+          "max_temp": "Maximum temperature",
+          "target_temp": "Startup target temperature",
+          "cold_tolerance": "Cold tolerance",
+          "hot_tolerance": "Hot tolerance",
+          "initial_hvac_mode": "Startup HVAC mode",
+          "initial_preset": "Startup pilot mode",
+          "precision": "Temperature step",
+          "sensor_timeout": "Sensor timeout (0 disables)"
+        }
+      }
+    },
+    "error": {
+      "same_relays": "S1 and S2 must be different entities.",
+      "invalid_settings": "Check the temperature range and target. Tolerances must be non-negative, and at least one must be greater than zero.",
+      "empty_name": "Enter a name."
+    }
+  },
+  "selector": {
+    "initial_hvac_mode": {
+      "options": {
+        "off": "Off",
+        "heat": "Heat"
+      }
+    },
+    "initial_preset": {
+      "options": {
+        "away": "Frost protection",
+        "comfort": "Comfort",
+        "eco": "Eco",
+        "sleep": "Stop"
+      }
+    }
+  }
+}

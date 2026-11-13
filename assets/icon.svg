@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none">
+  <title>Fil Pilote Thermostat</title>
+  <desc>A radiator, three orange heat waves, and a pilot wire with a control signal.</desc>
+  <g stroke="#ed8538" stroke-width="9" stroke-linecap="round">
+    <path d="M76 69c-22-18 22-25 0-45M120 69c-22-18 22-25 0-45M164 69c-22-18 22-25 0-45"/>
+  </g>
+  <g stroke="#37556a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M49 119H34v43h15m142-43h14v43h-14M70 187v14m100-14v14"/>
+    <rect x="49" y="96" width="142" height="91" rx="13"/>
+    <path d="M77 107v68m29-68v68m29-68v68m28-68v68"/>
+  </g>
+  <path d="M205 143h21v80H113v-12H96v12H67" stroke="#ed8538" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="56" cy="223" r="10" fill="#ed8538"/>
+</svg>

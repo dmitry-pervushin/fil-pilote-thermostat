@@ -1,0 +1,81 @@
+{
+  "title": "Fil Pilote Thermostat",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connexion du fil pilote",
+        "description": "Choisissez deux relais distincts et un capteur de température ambiante. L’ordre S1/S2 doit correspondre au câblage de votre interface.",
+        "data": {
+          "name": "Nom",
+          "heater_s1": "Relais S1",
+          "heater_s2": "Relais S2",
+          "target_sensor": "Capteur de température"
+        }
+      },
+      "settings": {
+        "title": "Réglages du thermostat",
+        "description": "Températures et tolérances en °C. Laissez les valeurs de démarrage vides pour restaurer le dernier état. Away envoie Hors-gel et Sleep envoie Arrêt. Le délai du capteur est en secondes et vérifié chaque minute.",
+        "data": {
+          "min_temp": "Température minimale",
+          "max_temp": "Température maximale",
+          "target_temp": "Consigne au démarrage",
+          "cold_tolerance": "Tolérance de refroidissement",
+          "hot_tolerance": "Tolérance de chauffe",
+          "initial_hvac_mode": "Mode HVAC au démarrage",
+          "initial_preset": "Mode fil pilote au démarrage",
+          "precision": "Pas de température",
+          "sensor_timeout": "Délai du capteur (0 désactive)"
+        }
+      }
+    },
+    "error": {
+      "same_relays": "S1 et S2 doivent être des entités différentes.",
+      "invalid_settings": "Vérifiez la plage et la consigne. Les tolérances doivent être positives ou nulles, dont au moins une strictement positive.",
+      "empty_name": "Saisissez un nom."
+    },
+    "abort": {
+      "already_configured": "Un ou deux relais sont déjà utilisés par un thermostat fil pilote."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Options du thermostat",
+        "description": "Températures et tolérances en °C. Laissez les valeurs de démarrage vides pour restaurer le dernier état. Away envoie Hors-gel et Sleep envoie Arrêt. Le délai du capteur est en secondes et vérifié chaque minute.",
+        "data": {
+          "target_sensor": "Capteur de température",
+          "min_temp": "Température minimale",
+          "max_temp": "Température maximale",
+          "target_temp": "Consigne au démarrage",
+          "cold_tolerance": "Tolérance de refroidissement",
+          "hot_tolerance": "Tolérance de chauffe",
+          "initial_hvac_mode": "Mode HVAC au démarrage",
+          "initial_preset": "Mode fil pilote au démarrage",
+          "precision": "Pas de température",
+          "sensor_timeout": "Délai du capteur (0 désactive)"
+        }
+      }
+    },
+    "error": {
+      "same_relays": "S1 et S2 doivent être des entités différentes.",
+      "invalid_settings": "Vérifiez la plage et la consigne. Les tolérances doivent être positives ou nulles, dont au moins une strictement positive.",
+      "empty_name": "Saisissez un nom."
+    }
+  },
+  "selector": {
+    "initial_hvac_mode": {
+      "options": {
+        "off": "Arrêt",
+        "heat": "Chauffage"
+      }
+    },
+    "initial_preset": {
+      "options": {
+        "away": "Hors-gel",
+        "comfort": "Confort",
+        "eco": "Éco",
+        "sleep": "Arrêt"
+      }
+    }
+  }
+}

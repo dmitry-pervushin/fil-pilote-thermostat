@@ -1,0 +1,14 @@
+{
+  "domain": "fil_pilote_thermostat",
+  "name": "Fil Pilote Thermostat",
+  "version": "1.0.0",
+  "documentation": "https://github.com/dmitry-pervushin/fil-pilote-thermostat",
+  "issue_tracker": "https://github.com/dmitry-pervushin/fil-pilote-thermostat/issues",
+  "codeowners": ["@dmitry-pervushin"],
+  "config_flow": true,
+  "integration_type": "helper",
+  "iot_class": "local_push",
+  "dependencies": ["homeassistant"],
+  "after_dependencies": ["sensor", "switch", "light", "input_boolean"],
+  "requirements": []
+}
