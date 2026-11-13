@@ -10,6 +10,8 @@ Un thermostat local pour Home Assistant : pilotez vos radiateurs électriques av
 
 ## Installation
 
+**Aucune configuration YAML n’est nécessaire.** La méthode recommandée est la configuration depuis l’interface Home Assistant : vous pouvez y sélectionner les relais et la sonde, puis modifier les paramètres sans éditer `configuration.yaml`.
+
 1. Copiez le dossier `custom_components/fil_pilote_thermostat` dans le répertoire de configuration HA : `/config/custom_components/fil_pilote_thermostat/`.
 2. Redémarrez Home Assistant.
 3. Ouvrez **Paramètres → Appareils et services → Ajouter une intégration → Fil Pilote Thermostat**.
@@ -54,7 +56,9 @@ Les commandes attendent la fin des actions de relais, évitent les appels redond
 
 Attributs de diagnostic : `pilot_mode`, `requested_pilot_mode`, `requested_hvac_mode`, `requested_preset_mode`, `heater_s1`, `heater_s2`, `sensor_entity_id`, `command_failed`. HA masque les attributs d’état d’une entité indisponible ; le téléchargement des diagnostics de l’intégration reste disponible, y compris pendant une panne.
 
-## Configuration YAML
+## Configuration YAML (facultative)
+
+Cette section est une alternative à la configuration depuis l’interface, conservée pour les installations existantes et les utilisateurs qui préfèrent le YAML. Si vous avez ajouté le thermostat depuis l’interface, ignorez cette section : aucun bloc YAML n’est à ajouter.
 
 Les noms d’options existants restent pris en charge. Ne configurez pas les mêmes relais à la fois dans le YAML et dans l’interface. Pour migrer, retirez l’ancien thermostat YAML et redémarrez HA avant de créer l’intégration dans l’interface ; adaptez au besoin les identifiants dans vos tableaux de bord et automatisations.
 

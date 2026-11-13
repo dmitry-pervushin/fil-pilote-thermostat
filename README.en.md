@@ -10,6 +10,8 @@ Requires **Home Assistant 2026.11 or later**. Development checks run against Cor
 
 ## Installation
 
+**YAML configuration is not required.** The recommended method is Home Assistant’s UI: select your relays and sensor, then adjust the settings without editing `configuration.yaml`.
+
 1. Copy `custom_components/fil_pilote_thermostat` from this project into your HA configuration directory, keeping the same path: `/config/custom_components/fil_pilote_thermostat/`.
 2. Restart Home Assistant.
 3. Open **Settings → Devices & services → Add integration → Fil Pilote Thermostat**.
@@ -54,7 +56,9 @@ Commands wait for their services to finish, avoid redundant calls, serialize con
 
 Useful state attributes: `pilot_mode`, `requested_pilot_mode`, `requested_hvac_mode`, `requested_preset_mode`, `heater_s1`, `heater_s2`, `sensor_entity_id`, `command_failed`. HA hides state attributes while an entity is unavailable; the integration's diagnostic download remains available during faults.
 
-## YAML
+## YAML (optional)
+
+This section is an alternative to UI setup, retained for existing installations and users who prefer YAML. If you added the thermostat through the UI, skip this section: no YAML block is needed.
 
 Existing option names are supported. Do not configure the same relays in both YAML and the UI. To migrate, remove the YAML thermostat and restart HA before creating the UI entry; entity IDs may need updating in dashboards and automations.
 
