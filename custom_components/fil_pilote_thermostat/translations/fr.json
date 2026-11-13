@@ -34,7 +34,8 @@
       "empty_name": "Saisissez un nom."
     },
     "abort": {
-      "already_configured": "Un ou deux relais sont déjà utilisés par un thermostat fil pilote."
+      "already_configured": "Un ou deux relais sont déjà utilisés par un thermostat fil pilote.",
+      "invalid_settings": "Vérifiez la plage et la consigne. Les tolérances doivent être positives ou nulles, dont au moins une strictement positive."
     }
   },
   "options": {

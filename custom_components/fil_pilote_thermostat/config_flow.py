@@ -1,8 +1,10 @@
 """UI setup and editable thermostat options."""
 
+import logging
+
 import probatio as vol
 from homeassistant.config_entries import ConfigFlow, OptionsFlow
-from homeassistant.const import CONF_NAME
+from homeassistant.const import CONF_NAME, CONF_UNIQUE_ID
 from homeassistant.core import callback
 from homeassistant.helpers import selector
 
@@ -25,6 +27,8 @@ from .const import (
     PRESETS,
 )
 from .schema import CONFIG_SCHEMA
+
+_LOGGER = logging.getLogger(__name__)
 
 
 def _entity_selector(domains):
@@ -85,6 +89,49 @@ class FilPiloteConfigFlow(ConfigFlow, domain=DOMAIN):
     @callback
     def async_get_options_flow(config_entry):
         return FilPiloteOptionsFlow()
+
+    async def async_step_import(self, user_input):
+        """Move YAML into a persistent entry without reapplying it on restart."""
+        try:
+            config = CONFIG_SCHEMA(user_input)
+        except vol.Invalid as err:
+            _LOGGER.error("Cannot import fil pilote YAML configuration: %s", err)
+            return self.async_abort(reason="invalid_settings")
+
+        relays = {config[CONF_HEATER_S1], config[CONF_HEATER_S2]}
+        await self.async_set_unique_id("|".join(sorted(relays)))
+        self._abort_if_unique_id_configured()
+        for entry in self._async_current_entries():
+            if relays & {entry.data[CONF_HEATER_S1], entry.data[CONF_HEATER_S2]} or (
+                CONF_UNIQUE_ID in config
+                and config[CONF_UNIQUE_ID] == entry.data.get(CONF_UNIQUE_ID)
+            ):
+                _LOGGER.error(
+                    "Cannot import thermostat %s: a relay or unique ID is already used by %s",
+                    config[CONF_NAME],
+                    entry.title,
+                )
+                return self.async_abort(reason="already_configured")
+
+        identity = {
+            CONF_NAME,
+            CONF_HEATER_S1,
+            CONF_HEATER_S2,
+            CONF_SENSOR,
+            CONF_UNIQUE_ID,
+        }
+        _LOGGER.info(
+            "Imported thermostat %s from YAML. Manage its settings in Devices & services; "
+            "the old YAML block can be removed and will no longer override UI settings",
+            config[CONF_NAME],
+        )
+        return self.async_create_entry(
+            title=config[CONF_NAME],
+            data={key: value for key, value in config.items() if key in identity},
+            options={
+                key: value for key, value in config.items() if key not in identity
+            },
+        )
 
     async def async_step_user(self, user_input=None):
         errors = {}

@@ -4,7 +4,7 @@
 
 [Français](README.md) · [English](README.en.md) · [Русский](README.ru.md)
 
-A local Home Assistant thermostat for electric radiators controlled by a **two-relay fil pilote interface** and a room temperature sensor. Configure it through the UI or keep your existing YAML.
+A local Home Assistant thermostat for electric radiators controlled by a **two-relay fil pilote interface** and a room temperature sensor. Configure it through the UI; existing YAML configurations are imported automatically.
 
 Requires **Home Assistant 2026.11 or later**. Development checks run against Core 2026.11.1 and Python 3.14.
 
@@ -58,9 +58,13 @@ Useful state attributes: `pilot_mode`, `requested_pilot_mode`, `requested_hvac_m
 
 ## YAML (optional)
 
-This section is an alternative to UI setup, retained for existing installations and users who prefer YAML. If you added the thermostat through the UI, skip this section: no YAML block is needed.
+If you added the thermostat through the UI, skip this section: no YAML block is needed.
 
-Existing option names are supported. Do not configure the same relays in both YAML and the UI. To migrate, remove the YAML thermostat and restart HA before creating the UI entry; entity IDs may need updating in dashboards and automations.
+**Since version 1.1.0, YAML → UI migration is automatic.** Update the component, keep your YAML block in place, and restart HA. Each thermostat is imported into **Settings → Devices & services**, where its options can then be managed.
+
+A missing `unique_id` is assigned automatically, removing the warning about entity settings being unavailable. An existing unique ID and its entity registry record are retained, including a customized name, area, and icon. Without a previous unique ID, the YAML name still determines the entity ID; for example, `name: Bureau` yields `climate.bureau` when that ID is free. Previously saved target and mode are restored unless YAML startup overrides replace them.
+
+After checking the integration and entity ID, **you can remove the thermostat's YAML block**. The component does not edit your files. Leaving the block in place creates no duplicates on subsequent startups and does not overwrite options changed in the UI: **YAML is read only for the initial import**. If the same relays already belong to a configured thermostat, that entry is kept without importing another one. Do not manually add a second integration before migration.
 
 If your previous YAML used °F, convert targets, limits, and tolerances to °C before upgrading. The new configuration format always uses °C.
 
@@ -89,7 +93,7 @@ climate:
 | `heater_s1`, `heater_s2` | required | Two distinct relay entities |
 | `target_sensor` | required | Room temperature sensor |
 | `name` | Fil Pilote Thermostat | Entity name |
-| `unique_id` | optional | Enable YAML entity registry settings |
+| `unique_id` | optional | Existing ID retained; assigned automatically if omitted |
 | `min_temp`, `max_temp` | 7 / 35 | Target limits in °C; minimum must be less than maximum |
 | `cold_tolerance`, `hot_tolerance` | 0.3 / 0.3 | Hysteresis in °C; non-negative, at least one greater than zero |
 | `precision` | 0.1 | Display precision and target step: 0.1, 0.5, or 1 |

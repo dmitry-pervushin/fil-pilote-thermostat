@@ -34,7 +34,8 @@
       "empty_name": "Enter a name."
     },
     "abort": {
-      "already_configured": "One or both relays are already used by a fil pilote thermostat."
+      "already_configured": "One or both relays are already used by a fil pilote thermostat.",
+      "invalid_settings": "Check the temperature range and target. Tolerances must be non-negative, and at least one must be greater than zero."
     }
   },
   "options": {

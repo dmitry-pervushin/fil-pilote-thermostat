@@ -1,7 +1,7 @@
 {
   "domain": "fil_pilote_thermostat",
   "name": "Fil Pilote Thermostat",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "documentation": "https://github.com/dmitry-pervushin/fil-pilote-thermostat",
   "issue_tracker": "https://github.com/dmitry-pervushin/fil-pilote-thermostat/issues",
   "codeowners": ["@dmitry-pervushin"],

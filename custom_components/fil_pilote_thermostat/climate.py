@@ -24,6 +24,7 @@ from homeassistant.components.climate import (
 from homeassistant.components.climate import (
     PLATFORM_SCHEMA as CLIMATE_PLATFORM_SCHEMA,
 )
+from homeassistant.config_entries import SOURCE_IMPORT
 from homeassistant.const import (
     ATTR_ENTITY_ID,
     ATTR_TEMPERATURE,
@@ -74,15 +75,28 @@ PLATFORM_SCHEMA = vol.All(
 
 
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
-    """Keep existing climate YAML configurations working."""
+    """Import legacy YAML once; the config entry owns the entity afterwards."""
     await async_setup_reload_service(hass, DOMAIN, PLATFORMS)
-    async_add_entities([FilPiloteThermostat(config, config.get(CONF_UNIQUE_ID))])
+    # Do not await entry setup from inside climate platform setup: forwarding the
+    # new entry back to climate must wait for this platform to finish first.
+    hass.async_create_task(
+        hass.config_entries.flow.async_init(
+            DOMAIN,
+            context={"source": SOURCE_IMPORT},
+            data={key: value for key, value in config.items() if key in CONFIG_FIELDS},
+        ),
+        "Import fil pilote YAML configuration",
+    )
 
 
 async def async_setup_entry(hass, entry, async_add_entities):
     """Set up a UI-configured thermostat with a stable entity registry ID."""
     config = CONFIG_SCHEMA({**entry.data, **entry.options})
-    entry.runtime_data = FilPiloteThermostat(config, entry.entry_id)
+    # Retaining a legacy unique ID also retains the entity registry record,
+    # including a renamed entity_id, area, and user customizations.
+    entry.runtime_data = FilPiloteThermostat(
+        config, entry.data.get(CONF_UNIQUE_ID, entry.entry_id)
+    )
     async_add_entities([entry.runtime_data])
 
 

@@ -4,7 +4,7 @@
 
 [Français](README.md) · [English](README.en.md) · [Русский](README.ru.md)
 
-Un thermostat local pour Home Assistant : pilotez vos radiateurs électriques avec une **interface fil pilote à deux relais** et une sonde de température ambiante. Configuration depuis l’interface HA ou en YAML.
+Un thermostat local pour Home Assistant : pilotez vos radiateurs électriques avec une **interface fil pilote à deux relais** et une sonde de température ambiante. Configuration depuis l’interface HA et import automatique des anciennes configurations YAML.
 
 **Home Assistant 2026.11 minimum.** Les tests utilisent Core 2026.11.1 et Python 3.14. Interface de configuration disponible en français, anglais et russe, selon la langue de votre profil HA.
 
@@ -58,9 +58,13 @@ Attributs de diagnostic : `pilot_mode`, `requested_pilot_mode`, `requested_hvac_
 
 ## Configuration YAML (facultative)
 
-Cette section est une alternative à la configuration depuis l’interface, conservée pour les installations existantes et les utilisateurs qui préfèrent le YAML. Si vous avez ajouté le thermostat depuis l’interface, ignorez cette section : aucun bloc YAML n’est à ajouter.
+Si vous avez ajouté le thermostat depuis l’interface, ignorez cette section : aucun bloc YAML n’est à ajouter.
 
-Les noms d’options existants restent pris en charge. Ne configurez pas les mêmes relais à la fois dans le YAML et dans l’interface. Pour migrer, retirez l’ancien thermostat YAML et redémarrez HA avant de créer l’intégration dans l’interface ; adaptez au besoin les identifiants dans vos tableaux de bord et automatisations.
+**Depuis la version 1.1.0, la migration YAML → interface est automatique.** Mettez à jour le composant en gardant votre bloc YAML, puis redémarrez HA. Chaque thermostat est importé dans **Paramètres → Appareils et services**. Vous pouvez ensuite modifier ses options depuis l’interface.
+
+Un `unique_id` est attribué automatiquement s’il manque : l’avertissement indiquant que l’entité n’a pas d’identifiant unique disparaît. Si un identifiant existait déjà, il est conservé avec la même entrée du registre, y compris son nom personnalisé, sa zone et son icône. Sans identifiant préalable, le nom YAML continue de déterminer l’identifiant de l’entité, par exemple `name: Bureau` donne `climate.bureau` lorsque cet identifiant est libre. La consigne et le mode précédemment enregistrés sont restaurés, sauf si les paramètres initiaux YAML les remplacent.
+
+Après avoir vérifié l’intégration et l’identifiant de l’entité, **vous pouvez supprimer le bloc YAML du thermostat**. Le composant ne modifie pas vos fichiers. Si le bloc reste présent, les démarrages suivants ne créent aucun doublon et ne remplacent pas les options modifiées dans l’interface : **le YAML n’est lu qu’à l’import initial**. Un thermostat déjà configuré avec les mêmes relais est conservé sans nouvel import. Ne créez pas manuellement une seconde intégration avant la migration.
 
 Si votre ancienne configuration utilisait des valeurs en °F, convertissez les consignes, les limites et les tolérances en °C avant la mise à jour. Le nouveau format de configuration utilise toujours les °C.
 
@@ -89,7 +93,7 @@ climate:
 | `heater_s1`, `heater_s2` | obligatoire | Deux relais distincts |
 | `target_sensor` | obligatoire | Sonde de température ambiante |
 | `name` | Fil Pilote Thermostat | Nom de l’entité |
-| `unique_id` | facultatif | Permet la gestion de l’entité YAML dans le registre |
+| `unique_id` | facultatif | Identifiant existant conservé ; attribué automatiquement s’il manque |
 | `min_temp`, `max_temp` | 7 / 35 | Limites en °C ; minimum strictement inférieur au maximum |
 | `cold_tolerance`, `hot_tolerance` | 0.3 / 0.3 | Hystérésis en °C ; valeurs positives ou nulles, au moins une strictement positive |
 | `precision` | 0.1 | Précision et pas : 0.1, 0.5 ou 1 |
