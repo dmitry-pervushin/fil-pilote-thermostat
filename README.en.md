@@ -12,16 +12,17 @@ Requires **Home Assistant 2026.11 or later**. Development checks run against Cor
 
 **YAML configuration is not required.** The recommended method is Home Assistant’s UI: select your relays and sensor, then adjust the settings without editing `configuration.yaml`.
 
-1. Copy `custom_components/fil_pilote_thermostat` from this project into your HA configuration directory, keeping the same path: `/config/custom_components/fil_pilote_thermostat/`.
-2. Restart Home Assistant.
-3. Open **Settings → Devices & services → Add integration → Fil Pilote Thermostat**.
-4. Select the two relay entities and your room sensor, then set your temperature limits and tolerances.
+1. In **HACS**, search for **Fil Pilote Thermostat**.
+2. Open its page and select **Download**.
+3. Restart Home Assistant.
+4. Open **Settings → Devices & services → Add integration → Fil Pilote Thermostat**.
+5. Select the two relay entities and your room sensor, then set your temperature limits and tolerances.
+
+**Manual installation (alternative):** copy `custom_components/fil_pilote_thermostat` from this project into `/config/custom_components/fil_pilote_thermostat/`, restart Home Assistant, then continue from step 4.
 
 Since version **1.1.1**, the thermostat appears under **Integrations**, rather than **Helpers**. For an existing installation, update the component and restart HA: settings and entity IDs are retained without recreating the thermostat.
 
 Relays can be `switch`, `light`, or `input_boolean` entities with on/off semantics. The sensor must be a `sensor` entity. Options can be changed without restarting HA. Relay identities stay fixed; recreate the entry to change them. A relay cannot be shared by multiple UI-configured thermostats.
-
-The project is available on [GitHub](https://github.com/dmitry-pervushin/fil-pilote-thermostat). To add it in HACS, open **Custom repositories**, enter this repository URL, and choose the **Integration** category. The project is not listed in the default HACS catalog.
 
 ## Pilot signals and presets
 

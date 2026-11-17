@@ -12,16 +12,17 @@ Un thermostat local pour Home Assistant : pilotez vos radiateurs électriques av
 
 **Aucune configuration YAML n’est nécessaire.** La méthode recommandée est la configuration depuis l’interface Home Assistant : vous pouvez y sélectionner les relais et la sonde, puis modifier les paramètres sans éditer `configuration.yaml`.
 
-1. Copiez le dossier `custom_components/fil_pilote_thermostat` dans le répertoire de configuration HA : `/config/custom_components/fil_pilote_thermostat/`.
-2. Redémarrez Home Assistant.
-3. Ouvrez **Paramètres → Appareils et services → Ajouter une intégration → Fil Pilote Thermostat**.
-4. Sélectionnez les relais S1 et S2, puis la sonde de température. Réglez les limites et les tolérances.
+1. Dans **HACS**, recherchez **Fil Pilote Thermostat**.
+2. Ouvrez sa fiche et sélectionnez **Télécharger**.
+3. Redémarrez Home Assistant.
+4. Ouvrez **Paramètres → Appareils et services → Ajouter une intégration → Fil Pilote Thermostat**.
+5. Sélectionnez les relais S1 et S2, puis la sonde de température. Réglez les limites et les tolérances.
+
+**Installation manuelle (alternative) :** copiez le dossier `custom_components/fil_pilote_thermostat` de ce projet dans `/config/custom_components/fil_pilote_thermostat/`, redémarrez Home Assistant, puis reprenez à l’étape 4.
 
 Depuis la version **1.1.1**, le thermostat apparaît dans l’onglet **Intégrations**, et non dans **Entrées (Helpers)**. Pour une installation existante, mettez à jour le composant et redémarrez HA : les réglages et les identifiants d’entités sont conservés, sans recréer le thermostat.
 
 Les relais peuvent être des entités `switch`, `light` ou `input_boolean` à commande marche/arrêt. La sonde doit être une entité `sensor`. Les options sont modifiables sans redémarrer HA. Les relais restent fixes : recréez l’intégration pour les changer. Un relais ne peut pas être partagé entre plusieurs thermostats configurés dans l’interface.
-
-Le projet est disponible sur [GitHub](https://github.com/dmitry-pervushin/fil-pilote-thermostat). Pour l’ajouter dans HACS, ouvrez **Dépôts personnalisés**, saisissez l’URL de ce dépôt et choisissez la catégorie **Intégration**. Le projet n’est pas référencé dans le catalogue HACS par défaut.
 
 ## Ordres fil pilote
 
