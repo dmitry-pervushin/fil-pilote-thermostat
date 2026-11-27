@@ -17,3 +17,5 @@ features:
     preset_modes:
       - comfort
       - eco
+      - away
+      - sleep

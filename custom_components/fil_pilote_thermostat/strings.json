@@ -14,7 +14,7 @@
       },
       "settings": {
         "title": "Thermostat settings",
-        "description": "Temperatures and tolerances are in °C. Leave startup overrides empty to restore the last state. Away sends frost protection; HVAC Off sends stop. Sensor timeout is in seconds and checked every minute.",
+        "description": "Temperatures and tolerances are in °C. Leave startup overrides empty to restore the last state. Away sends frost protection; Sleep sends stop. Sensor timeout is in seconds and checked every minute.",
         "data": {
           "min_temp": "Minimum temperature",
           "max_temp": "Maximum temperature",
@@ -42,7 +42,7 @@
     "step": {
       "init": {
         "title": "Thermostat options",
-        "description": "Temperatures and tolerances are in °C. Leave startup overrides empty to restore the last state. Away sends frost protection; HVAC Off sends stop. Sensor timeout is in seconds and checked every minute.",
+        "description": "Temperatures and tolerances are in °C. Leave startup overrides empty to restore the last state. Away sends frost protection; Sleep sends stop. Sensor timeout is in seconds and checked every minute.",
         "data": {
           "target_sensor": "Temperature sensor",
           "min_temp": "Minimum temperature",
@@ -74,7 +74,8 @@
       "options": {
         "away": "Frost protection",
         "comfort": "Comfort",
-        "eco": "Eco"
+        "eco": "Eco",
+        "sleep": "Stop"
       }
     }
   }

@@ -28,28 +28,30 @@ Les relais peuvent être des entités `switch`, `light` ou `input_boolean` à co
 
 Utilisez la carte **Thermostat** de Home Assistant. Aucune carte personnalisée ni ressource JavaScript n’est nécessaire. [Exemple prêt à copier](examples/thermostat-card.yaml).
 
-Dans l’éditeur de carte, affichez les préréglages **Confort** et **Éco** sous forme d’icônes plutôt que dans une liste déroulante. Gardez les commandes HVAC **Chauffage / Arrêt**. Le modèle climate de HA impose des modes HVAC fixes : Confort et Éco restent des profils dans l’API, même lorsqu’ils sont présentés comme boutons.
+Dans l’éditeur de carte, affichez les profils **Confort**, **Éco**, **Hors-gel** et **Arrêt** sous forme d’icônes plutôt que dans une liste déroulante. Gardez les commandes HVAC **Chauffage / Arrêt**. Le modèle climate de HA impose des modes HVAC fixes : les ordres fil pilote restent des préréglages dans l’API, même lorsqu’ils sont présentés comme boutons.
 
 La carte reçoit la consigne (`temperature`) et la température ambiante (`current_temperature`), y compris en mode Off. Quand le cadran devient trop petit, le frontend HA masque les libellés secondaires, dont la température ambiante. Avec deux rangées de commandes, augmentez la hauteur de la carte : **8 lignes** est un point de départ dans un tableau de bord Sections. Dans une autre disposition, ajustez la hauteur du conteneur. Si `current_temperature` est vide dans les outils de développement, vérifiez la sonde configurée.
 
-Depuis **1.2.0**, le profil Nuit/Sleep n’est plus proposé. Son ancienne fonction était l’arrêt : les anciennes configurations et les états restaurés `sleep` sont convertis en HVAC Off. Remplacez les automatisations qui appellent `climate.set_preset_mode` avec `sleep` par `climate.turn_off`.
+[ENGIE décrit jusqu’à six ordres fil pilote](https://particuliers.engie.fr/economies-energie/conseils-equipements-chauffage/conseils-radiateurs/fil-pilote-radiateur.html) : Confort, Éco, Confort −1 °C, Confort −2 °C, Hors-gel et Arrêt. Cette intégration prend actuellement en charge les quatre ordres de la table ci-dessous ; Confort −1 °C et Confort −2 °C ne sont pas implémentés.
+
+L’identifiant HA existant `sleep` (Nuit) est conservé : dans cette intégration, il envoie **Arrêt/veille**, comme le mode HVAC Off. Il ne définit pas une consigne nocturne distincte. Les configurations et automatisations existantes restent compatibles.
 
 ## Ordres fil pilote
 
 La convention des relais du composant d’origine est conservée :
 
-| Mode / profil HA | Ordre radiateur | S1 | S2 |
+| Préréglage HA | Ordre radiateur | S1 | S2 |
 | --- | --- | --- | --- |
 | `comfort` | Confort | off | off |
 | `eco` | Éco | on | on |
 | `away` | Hors-gel | on | off |
-| HVAC `off` | Arrêt | off | on |
+| `sleep` | Arrêt | off | on |
 
 **S1 et S2 ne sont pas interchangeables.** Vérifiez cette table avec votre interface fil pilote avant d’activer le chauffage. Il s’agit des états logiques des relais, pas d’un schéma de câblage secteur. Le composant suppose une interface fil pilote appropriée, déjà installée.
 
 En mode HVAC `heat`, Confort et Éco utilisent la sonde externe avec hystérésis : demande de chauffe à `consigne − cold_tolerance`, arrêt à `consigne + hot_tolerance`. Entre ces seuils, la demande précédente est conservée. En Éco, le radiateur peut également appliquer sa propre réduction de température.
 
-Hors-gel envoie cet ordre en continu : le seuil antigel reste géré par le radiateur. Le mode HVAC `off` demande toujours l’arrêt, même sans sonde valide. Choisir un préréglage n’active pas le chauffage. À la première installation, les valeurs par défaut sont **Off**, **Hors-gel** et **20 °C**, dans les limites configurées.
+Hors-gel envoie cet ordre en continu : le seuil antigel reste géré par le radiateur. Arrêt envoie l’ordre d’arrêt en continu. Le mode HVAC `off` demande toujours l’arrêt, même sans sonde valide. Choisir un préréglage n’active pas le chauffage. À la première installation, les valeurs par défaut sont **Off**, **Hors-gel** et **20 °C**, dans les limites configurées.
 
 Le radiateur doit être en mode externe/programmation/fil pilote et son thermostat local doit autoriser la température souhaitée. Le signal fil pilote ne contourne pas sa limite interne. `hvac_action: heating` indique un ordre Confort/Éco observé, pas une mesure de puissance ni la preuve que la résistance chauffe.
 
@@ -113,4 +115,4 @@ climate:
 | `sensor_timeout` | 0 | Âge maximal du dernier rapport en secondes ; 0 désactive |
 | `target_temp` | restaurée / 20 | Consigne initiale en °C |
 | `initial_hvac_mode` | restauré / off | `heat` ou `off` |
-| `initial_preset` | restauré / away | `comfort`, `eco` ou `away` |
+| `initial_preset` | restauré / away | `comfort`, `eco`, `away` ou `sleep` |

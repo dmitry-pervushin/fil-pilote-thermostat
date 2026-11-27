@@ -75,42 +75,6 @@ async def test_off_reports_both_temperatures_to_native_card(hass, config):
     assert state.attributes["current_temperature"] == 19.5
 
 
-async def test_sleep_is_not_a_selectable_profile(hass, config):
-    await setup_thermostat(hass, config)
-    assert hass.states.get("climate.room").attributes["preset_modes"] == [
-        "comfort",
-        "eco",
-        "away",
-    ]
-    with pytest.raises(ServiceValidationError):
-        await climate_call(hass, "set_preset_mode", preset_mode="sleep")
-
-
-async def test_legacy_sleep_startup_setting_migrates_to_off(hass, config):
-    config["initial_preset"] = "sleep"
-    entity = await setup_thermostat(hass, config)
-    assert entity.hvac_mode == "off"
-    assert entity.preset_mode == "comfort"
-    assert hass.states.get("switch.s1").state == "off"
-    assert hass.states.get("switch.s2").state == "on"
-
-
-async def test_restored_sleep_migrates_to_off_without_heat_pulse(hass, config):
-    for key in ("initial_hvac_mode", "initial_preset"):
-        config.pop(key)
-    restore_state.async_get(hass).last_states_by_entity_id["climate.room"] = (
-        restore_state.StoredState(
-            State("climate.room", "heat", {"temperature": 20, "preset_mode": "sleep"}),
-            None,
-            dt_util.utcnow(),
-        )
-    )
-    entity = await setup_thermostat(hass, config)
-    assert entity.hvac_mode == "off"
-    assert entity.preset_mode == "comfort"
-    assert not hass.data["test_relay_calls"]
-
-
 @pytest.mark.parametrize(
     "bad", ["unavailable", "unknown", "oops", "nan", "inf", "-inf", None]
 )
@@ -134,6 +98,7 @@ async def test_presets_and_combined_temperature_service(hass, config):
     for preset, expected in (
         ("eco", ("on", "on")),
         ("away", ("on", "off")),
+        ("sleep", ("off", "on")),
         ("comfort", ("off", "off")),
     ):
         await climate_call(hass, "set_preset_mode", preset_mode=preset)

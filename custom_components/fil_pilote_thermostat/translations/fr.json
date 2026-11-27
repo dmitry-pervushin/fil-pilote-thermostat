@@ -14,7 +14,7 @@
       },
       "settings": {
         "title": "Réglages du thermostat",
-        "description": "Températures et tolérances en °C. Laissez les valeurs de démarrage vides pour restaurer le dernier état. Away envoie Hors-gel et le mode HVAC Off envoie Arrêt. Le délai du capteur est en secondes et vérifié chaque minute.",
+        "description": "Températures et tolérances en °C. Laissez les valeurs de démarrage vides pour restaurer le dernier état. Away envoie Hors-gel et Sleep envoie Arrêt. Le délai du capteur est en secondes et vérifié chaque minute.",
         "data": {
           "min_temp": "Température minimale",
           "max_temp": "Température maximale",
@@ -42,7 +42,7 @@
     "step": {
       "init": {
         "title": "Options du thermostat",
-        "description": "Températures et tolérances en °C. Laissez les valeurs de démarrage vides pour restaurer le dernier état. Away envoie Hors-gel et le mode HVAC Off envoie Arrêt. Le délai du capteur est en secondes et vérifié chaque minute.",
+        "description": "Températures et tolérances en °C. Laissez les valeurs de démarrage vides pour restaurer le dernier état. Away envoie Hors-gel et Sleep envoie Arrêt. Le délai du capteur est en secondes et vérifié chaque minute.",
         "data": {
           "target_sensor": "Capteur de température",
           "min_temp": "Température minimale",
@@ -74,7 +74,8 @@
       "options": {
         "away": "Hors-gel",
         "comfort": "Confort",
-        "eco": "Éco"
+        "eco": "Éco",
+        "sleep": "Arrêt"
       }
     }
   }

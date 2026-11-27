@@ -171,11 +171,6 @@ class FilPiloteThermostat(RestoreClimate):
                 "requested_preset_mode",
                 old.attributes.get(ATTR_PRESET_MODE) if old else None,
             )
-            if preset == PRESET_SLEEP:
-                # The old Sleep preset sent Stop. Preserve that physical command
-                # using HVAC Off, while leaving a valid profile for the next On.
-                self._attr_hvac_mode = HVACMode.OFF
-                preset = PRESET_COMFORT
             # Retain the original default, frost protection, on first installation.
             self._attr_preset_mode = preset if preset in PRESETS else PRESET_AWAY
         self.async_on_remove(

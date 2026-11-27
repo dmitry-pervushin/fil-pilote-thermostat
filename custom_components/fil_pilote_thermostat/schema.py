@@ -3,7 +3,7 @@
 import math
 
 import probatio as vol
-from homeassistant.components.climate import PRESET_COMFORT, PRESET_SLEEP, HVACMode
+from homeassistant.components.climate import HVACMode
 from homeassistant.const import CONF_NAME, CONF_UNIQUE_ID
 from homeassistant.helpers import config_validation as cv
 
@@ -63,8 +63,7 @@ CONFIG_FIELDS = {
         finite_float, vol.Range(min=0)
     ),
     vol.Optional(CONF_INITIAL_HVAC_MODE): vol.In([HVACMode.HEAT, HVACMode.OFF]),
-    # Accept old YAML/options so a removed stop preset can migrate to HVAC Off.
-    vol.Optional(CONF_INITIAL_PRESET): vol.In([*PRESETS, PRESET_SLEEP]),
+    vol.Optional(CONF_INITIAL_PRESET): vol.In(PRESETS),
     vol.Optional(CONF_PRECISION, default=0.1): vol.All(
         finite_float, vol.In([0.1, 0.5, 1.0])
     ),
@@ -76,10 +75,6 @@ CONFIG_FIELDS = {
 
 def validate_config(config):
     """Validate relationships between fields. All configured temperatures are °C."""
-    if config.get(CONF_INITIAL_PRESET) == PRESET_SLEEP:
-        config = dict(config)
-        config[CONF_INITIAL_PRESET] = PRESET_COMFORT
-        config[CONF_INITIAL_HVAC_MODE] = HVACMode.OFF
     if config[CONF_HEATER_S1] == config[CONF_HEATER_S2]:
         raise vol.Invalid("Relays S1 and S2 must be different")
     if config[CONF_MIN_TEMP] >= config[CONF_MAX_TEMP]:
