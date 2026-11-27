@@ -63,6 +63,18 @@ async def test_stop_without_sensor_at_startup(hass, config):
     assert hass.states.get("climate.room").state == "unavailable"
 
 
+async def test_off_reports_both_temperatures_to_native_card(hass, config):
+    config["initial_hvac_mode"] = "off"
+    await setup_thermostat(hass, config)
+    state = hass.states.get("climate.room")
+    assert state.attributes["temperature"] == 20
+    assert state.attributes["current_temperature"] == 19
+    await set_temperature(hass, 19.5)
+    state = hass.states.get("climate.room")
+    assert state.state == "off"
+    assert state.attributes["current_temperature"] == 19.5
+
+
 @pytest.mark.parametrize(
     "bad", ["unavailable", "unknown", "oops", "nan", "inf", "-inf", None]
 )

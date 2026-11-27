@@ -24,6 +24,18 @@ Depuis la version **1.1.1**, le thermostat apparaît dans l’onglet **Intégrat
 
 Les relais peuvent être des entités `switch`, `light` ou `input_boolean` à commande marche/arrêt. La sonde doit être une entité `sensor`. Les options sont modifiables sans redémarrer HA. Les relais restent fixes : recréez l’intégration pour les changer. Un relais ne peut pas être partagé entre plusieurs thermostats configurés dans l’interface.
 
+## Carte thermostat native
+
+Utilisez la carte **Thermostat** de Home Assistant. Aucune carte personnalisée ni ressource JavaScript n’est nécessaire. [Exemple prêt à copier](examples/thermostat-card.yaml).
+
+Dans l’éditeur de carte, affichez les profils **Confort**, **Éco**, **Hors-gel** et **Arrêt** sous forme d’icônes plutôt que dans une liste déroulante. Gardez les commandes HVAC **Chauffage / Arrêt**. Le modèle climate de HA impose des modes HVAC fixes : les ordres fil pilote restent des préréglages dans l’API, même lorsqu’ils sont présentés comme boutons.
+
+La carte reçoit la consigne (`temperature`) et la température ambiante (`current_temperature`), y compris en mode Off. Quand le cadran devient trop petit, le frontend HA masque les libellés secondaires, dont la température ambiante. Avec deux rangées de commandes, augmentez la hauteur de la carte : **8 lignes** est un point de départ dans un tableau de bord Sections. Dans une autre disposition, ajustez la hauteur du conteneur. Si `current_temperature` est vide dans les outils de développement, vérifiez la sonde configurée.
+
+[ENGIE décrit jusqu’à six ordres fil pilote](https://particuliers.engie.fr/economies-energie/conseils-equipements-chauffage/conseils-radiateurs/fil-pilote-radiateur.html) : Confort, Éco, Confort −1 °C, Confort −2 °C, Hors-gel et Arrêt. Cette intégration prend actuellement en charge les quatre ordres de la table ci-dessous ; Confort −1 °C et Confort −2 °C ne sont pas implémentés.
+
+L’identifiant HA existant `sleep` (Nuit) est conservé : dans cette intégration, il envoie **Arrêt/veille**, comme le mode HVAC Off. Il ne définit pas une consigne nocturne distincte. Les configurations et automatisations existantes restent compatibles.
+
 ## Ordres fil pilote
 
 La convention des relais du composant d’origine est conservée :

@@ -24,6 +24,18 @@ Since version **1.1.1**, the thermostat appears under **Integrations**, rather t
 
 Relays can be `switch`, `light`, or `input_boolean` entities with on/off semantics. The sensor must be a `sensor` entity. Options can be changed without restarting HA. Relay identities stay fixed; recreate the entry to change them. A relay cannot be shared by multiple UI-configured thermostats.
 
+## Native thermostat card
+
+Use Home Assistant’s built-in **Thermostat** card. No custom card or JavaScript resource is required. [Ready-to-copy example](examples/thermostat-card.yaml).
+
+In the card editor, show **Comfort**, **Eco**, **Frost protection**, and **Stop** as preset icons instead of a dropdown. Keep the HVAC **Heat / Off** controls. HA defines a fixed set of HVAC modes: the fil pilote commands remain presets in the API even when displayed as buttons.
+
+The entity provides both target (`temperature`) and room (`current_temperature`) values, including while Off. At very small dial sizes, HA hides secondary labels, including room temperature. With two control rows, increase the card height: **8 rows** is a starting point on a Sections dashboard. For other layouts, adjust the containing card/grid height. If `current_temperature` is empty in Developer Tools, check the configured sensor.
+
+[ENGIE describes up to six fil pilote commands](https://particuliers.engie.fr/economies-energie/conseils-equipements-chauffage/conseils-radiateurs/fil-pilote-radiateur.html): Comfort, Eco, Comfort −1 °C, Comfort −2 °C, frost protection, and Stop. This integration currently implements the four commands in the table below; Comfort −1 °C and Comfort −2 °C are not implemented.
+
+The existing HA identifier `sleep` (Night) is retained: in this integration it sends **Stop/standby**, the same physical command as HVAC Off. It does not introduce a separate nighttime target temperature. Existing configurations and automations remain compatible.
+
 ## Pilot signals and presets
 
 The original relay convention is preserved:
