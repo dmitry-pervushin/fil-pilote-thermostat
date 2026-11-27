@@ -201,7 +201,7 @@ class FilPiloteOptionsFlow(OptionsFlow):
 
     async def async_step_init(self, user_input=None):
         errors = {}
-        current = {**self.config_entry.data, **self.config_entry.options}
+        current = CONFIG_SCHEMA({**self.config_entry.data, **self.config_entry.options})
         if user_input is not None:
             try:
                 config = CONFIG_SCHEMA({**self.config_entry.data, **user_input})

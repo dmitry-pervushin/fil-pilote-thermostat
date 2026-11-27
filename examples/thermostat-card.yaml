@@ -1,0 +1,19 @@
+# Native Home Assistant thermostat card; paste into the dashboard card editor.
+# Grid dimensions apply to a Sections dashboard. In other layouts, adjust the
+# containing grid/card height so the dial is not reduced to its compact size.
+type: thermostat
+entity: climate.bureau
+show_current_as_primary: false
+grid_options:
+  columns: 12
+  rows: 8
+features:
+  - type: climate-hvac-modes
+    hvac_modes:
+      - heat
+      - "off"
+  - type: climate-preset-modes
+    style: icons
+    preset_modes:
+      - comfort
+      - eco

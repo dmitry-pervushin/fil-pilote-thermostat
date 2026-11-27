@@ -24,22 +24,32 @@ Since version **1.1.1**, the thermostat appears under **Integrations**, rather t
 
 Relays can be `switch`, `light`, or `input_boolean` entities with on/off semantics. The sensor must be a `sensor` entity. Options can be changed without restarting HA. Relay identities stay fixed; recreate the entry to change them. A relay cannot be shared by multiple UI-configured thermostats.
 
+## Native thermostat card
+
+Use Home Assistant’s built-in **Thermostat** card. No custom card or JavaScript resource is required. [Ready-to-copy example](examples/thermostat-card.yaml).
+
+In the card editor, show **Comfort** and **Eco** as preset icons instead of a dropdown. Keep the HVAC **Heat / Off** controls. HA defines a fixed set of HVAC modes: Comfort and Eco remain profiles in the API even when displayed as buttons.
+
+The entity provides both target (`temperature`) and room (`current_temperature`) values, including while Off. At very small dial sizes, HA hides secondary labels, including room temperature. With two control rows, increase the card height: **8 rows** is a starting point on a Sections dashboard. For other layouts, adjust the containing card/grid height. If `current_temperature` is empty in Developer Tools, check the configured sensor.
+
+Since **1.2.0**, the Night/Sleep profile is no longer offered. It previously meant Stop: old `sleep` settings and restored states migrate to HVAC Off. Replace automations using `climate.set_preset_mode` with `sleep` with `climate.turn_off`.
+
 ## Pilot signals and presets
 
 The original relay convention is preserved:
 
-| Preset | Radiator command | S1 | S2 |
+| Mode / profile | Radiator command | S1 | S2 |
 | --- | --- | --- | --- |
 | `comfort` | Comfort | off | off |
 | `eco` | Eco | on | on |
 | `away` | Frost protection / Hors-gel | on | off |
-| `sleep` | Stop / Arrêt | off | on |
+| HVAC `off` | Stop / Arrêt | off | on |
 
 **S1 and S2 are not interchangeable.** Check the mapping against your existing pilot-wire interface before enabling heating. These are logical relay states, not instructions for connecting mains wiring. The component expects an already installed, appropriate fil pilote interface.
 
 In HVAC `heat`, Comfort and Eco use the external temperature sensor with hysteresis. Heating starts at `target − cold_tolerance` and stops at `target + hot_tolerance`; the previous demand is retained inside the band. Eco sends the radiator's Eco command, so the radiator may apply its own temperature reduction.
 
-Away sends frost protection continuously; the radiator controls its own frost threshold. Sleep sends stop continuously. HVAC `off` always sends stop, regardless of the selected preset or sensor availability. Selecting a preset does not turn heating on. On a new installation the defaults are **Off**, **Away**, and a **20 °C** target, clamped to your configured limits.
+Away sends frost protection continuously; the radiator controls its own frost threshold. HVAC `off` always sends stop, regardless of the selected preset or sensor availability. Selecting a preset does not turn heating on. On a new installation the defaults are **Off**, **Away**, and a **20 °C** target, clamped to your configured limits.
 
 The radiator must be in its external/program/pilot-wire mode, and its local thermostat must allow the intended temperature. A pilot command cannot override its internal temperature limit. `hvac_action: heating` means a Comfort/Eco signal is observed; it does not measure electrical power or prove that the heating element is active.
 
@@ -103,7 +113,7 @@ climate:
 | `sensor_timeout` | 0 | Maximum age since last sensor report, in seconds; 0 disables |
 | `target_temp` | restored / 20 | Startup target in °C |
 | `initial_hvac_mode` | restored / off | `heat` or `off` |
-| `initial_preset` | restored / away | `comfort`, `eco`, `away`, or `sleep` |
+| `initial_preset` | restored / away | `comfort`, `eco`, or `away` |
 
 ## Development
 
